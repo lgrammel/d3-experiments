@@ -17,7 +17,7 @@ resultHandler = (result) ->
 
   overlay = new google.maps.OverlayView
   overlay.onAdd = ->
-    layer = d3.select(this.getPanes().overlayLayer).append("div").attr("class", "earthquakes")
+    layer = d3.select(this.getPanes().overlayLayer).append("div").attr("class", "earthquake")
     overlay.draw = ->
       projection = this.getProjection()
       padding = 10
