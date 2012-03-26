@@ -13,15 +13,14 @@ map = po.map().container(d3.select("#map").append("svg:svg").node())
         .add(po.dblclick())
         .add(po.arrow())
 
-# background tiles
+# background tiles from Stamen http://maps.stamen.com
 map.add(po.image().url(po.url("http://tile.stamen.com/toner/{Z}/{X}/{Y}.png")))
 
 resultHandler = (json) ->
-  data = resolve(json, "feed.entry")
+  data = resolve(json, "query.results.item")
 
   transform = (earthquake) ->
-    latlng = earthquake.gsx$coordinates.$t.split("/") # coordinates are in format 'lat/lng'
-    d = map.locationPoint({lat: latlng[0], lon: latlng[1]})
+    d = map.locationPoint({lat: earthquake.lat, lon: earthquake.long})
     "translate(" + d.x + "," + d.y + ")"
 
   # Insert our layer beneath the compass.
@@ -32,17 +31,16 @@ resultHandler = (json) ->
                 .attr("transform", transform)
                 .attr("class", "earthquake")
 
-  color = d3.interpolateRgb("#000","#f00")
+  color = d3.interpolateRgb("#a00","#f00")
 
   marker.append("svg:circle")
         .attr("r", 4.5)
-        .attr("fill", (d) => color(d.gsx$magnitude.$t / 10)) # color by magnitude (brighter = stronger)
+        .attr("fill", (d) => color(d.subject[0] / 10)) # color by magnitude (brighter = stronger)
 
   marker.append("svg:text")
         .attr("x", 7)
         .attr("dy", ".31em")
         .attr("stroke", "red")
-        .text((d) ->  d.gsx$title.$t ) # title if exists
 
   map.on("move", ->
     layer.selectAll("g").attr("transform", transform)
@@ -51,6 +49,6 @@ resultHandler = (json) ->
 map.add(po.compass().pan("none"))
 
 do ->
-  d3.json("https://spreadsheets.google.com/feeds/list/tYFwOmgNfJe1WWHR9OcGnCw/od6/public/values?alt=json", resultHandler)
-  # Spredsheet can be viewed at
-  # https://docs.google.com/spreadsheet/ccc?key=0AgNAl7-WtHbcdFlGd09tZ05mSmUxV1dIUjlPY0duQ3c&authkey=CITGzqML
+  d3.json("http://query.yahooapis.com/v1/public/yql?q=use%20%22http%3A%2F%2Fearthquake.usgs.gov%2Fearthquakes%2Fcatalogs%2Feqs7day-M2.5.xml%22%3B%20select%20*%20from%20rss%20where%20url%3D%22http%3A%2F%2Fearthquake.usgs.gov%2Fearthquakes%2Fcatalogs%2Feqs7day-M2.5.xml%22%3B&format=json&diagnostics=true", resultHandler)
+  # Using YQL to get data from http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-M2.5.xml
+  # to circumvent cross-origin problems via JSONP

@@ -23,25 +23,22 @@
   resultHandler = function(json) {
     var color, data, layer, marker, transform,
       _this = this;
-    data = resolve(json, "feed.entry");
+    data = resolve(json, "query.results.item");
     transform = function(earthquake) {
-      var d, latlng;
-      latlng = earthquake.gsx$coordinates.$t.split("/");
+      var d;
       d = map.locationPoint({
-        lat: latlng[0],
-        lon: latlng[1]
+        lat: earthquake.lat,
+        lon: earthquake.long
       });
       return "translate(" + d.x + "," + d.y + ")";
     };
     layer = d3.select("#map svg").insert("svg:g", ".compass");
     marker = layer.selectAll("g").data(data).enter().append("svg:g").attr("transform", transform).attr("class", "earthquake");
-    color = d3.interpolateRgb("#000", "#f00");
+    color = d3.interpolateRgb("#a00", "#f00");
     marker.append("svg:circle").attr("r", 4.5).attr("fill", function(d) {
-      return color(d.gsx$magnitude.$t / 10);
+      return color(d.subject[0] / 10);
     });
-    marker.append("svg:text").attr("x", 7).attr("dy", ".31em").attr("stroke", "red").text(function(d) {
-      return d.gsx$title.$t;
-    });
+    marker.append("svg:text").attr("x", 7).attr("dy", ".31em").attr("stroke", "red");
     return map.on("move", function() {
       return layer.selectAll("g").attr("transform", transform);
     });
@@ -50,7 +47,7 @@
   map.add(po.compass().pan("none"));
 
   (function() {
-    return d3.json("https://spreadsheets.google.com/feeds/list/tYFwOmgNfJe1WWHR9OcGnCw/od6/public/values?alt=json", resultHandler);
+    return d3.json("http://query.yahooapis.com/v1/public/yql?q=use%20%22http%3A%2F%2Fearthquake.usgs.gov%2Fearthquakes%2Fcatalogs%2Feqs7day-M2.5.xml%22%3B%20select%20*%20from%20rss%20where%20url%3D%22http%3A%2F%2Fearthquake.usgs.gov%2Fearthquakes%2Fcatalogs%2Feqs7day-M2.5.xml%22%3B&format=json&diagnostics=true", resultHandler);
   })();
 
 }).call(this);

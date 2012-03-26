@@ -1,12 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <title>Victoria Neighbourhoods</title>
+    <title>Latest Earthquakes in the World - Past 7 days (from USGS)</title>
 
-    <script type="text/javascript"  src="../../lib/polymaps.js"></script>
-    <script type="text/javascript" src="../../lib/d3.v2.js" ></script>
+    <script type="text/javascript"  src="https://raw.github.com/simplegeo/polymaps/v2.5.0/polymaps.min.js"></script>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js" ></script>
+    <script type="text/coffeescript" src="earthquakes.coffee"></script>
+    <script type="text/javascript" src="http://github.com/jashkenas/coffee-script/raw/master/extras/coffee-script.js"></script>
 
-    <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js"></script>
     <style type="text/css">
 
         html, body, #map {
@@ -16,26 +17,18 @@
             padding: 0;
         }
 
-        .earthquake, .earthquake svg {
+        .earthquake {
             position: absolute;
-        }
-
-        .earthquake svg {
-            width: 60px;
-            height: 20px;
-            padding-right: 100px;
-            font: 10px sans-serif;
         }
 
         .earthquake circle {
             stroke: black;
-            stroke-width: 1.5px;
+            stroke-width: 1px;
         }
 
     </style>
 </head>
 <body>
 <div id="map"></div>
-<script type="text/javascript"  src="earthquakes.js"></script>
 </body>
 </html>
