@@ -33,14 +33,26 @@
       return "translate(" + d.x + "," + d.y + ")";
     };
     layer = d3.select("#map svg").insert("svg:g", ".compass");
-    marker = layer.selectAll("g").data(data).enter().append("svg:g").attr("transform", transform).attr("class", "earthquake");
+    marker = layer.selectAll("g").data(data).enter().append("svg:g").attr("transform", transform);
     color = d3.interpolateRgb("#a00", "#f00");
-    marker.append("svg:circle").attr("r", 4.5).attr("fill", function(d) {
+    marker.append("svg:circle").attr("class", "earthquake").attr("r", 4.5).attr("fill", function(d) {
       return color(d.subject[0] / 10);
+    }).text(function(d) {
+      return "test";
+    }).append("svg:title").text(function(d) {
+      return "test";
     });
-    marker.append("svg:text").attr("x", 7).attr("dy", ".31em").attr("stroke", "red");
-    return map.on("move", function() {
+    map.on("move", function() {
       return layer.selectAll("g").attr("transform", transform);
+    });
+    $('.earthquake').tipsy({
+      gravity: 'w'
+    });
+    return $('.earthquake title').parent().tipsy({
+      gravity: 'sw',
+      title: function() {
+        return $(_this).find('title').text();
+      }
     });
   };
 
