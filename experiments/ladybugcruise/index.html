@@ -29,33 +29,41 @@
         .location {
             position: absolute;
             stroke: black;
+            cursor: pointer;
         }
 
         .destination {
             position: absolute;
             stroke: black;
+            cursor: pointer;
         }
 
-        .title {
+        .header {
+            background: #fff;
+            background: rgba(255, 255, 255, 0.7);
             left: 120px;
             top: 0px;
             position: absolute;
+            padding: 10px;
+        }
+
+        .title {
             font-family: Times, serif;
             font-size: 36px;
             font-weight: bold;
         }
 
         .description {
-            left: 130px;
-            top: 40px;
-            position: absolute;
             font-family: Times, serif;
             font-size: 14px;
+            width: 400px;
         }
     </style>
 <body>
 <div id="map"></div>
-<div class="title">Cruise of the Ladybug</div>
-<div class="description">Click on circles to open blog posts.</div>
+<div class="header">
+  <div class="title">Cruise of the Ladybug</div>
+  <div class="description">Click on circles to open blog posts. Use mouse to pan map and mousewheel to zoom.</div>
+</div>
 </body>
 </html>
